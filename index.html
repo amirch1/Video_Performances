@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <video controls id="video" autoplay="autoplay">
+        <source src="Big_Buck_Bunny_360_10s_10MB.mp4">
+    </video>
+</body>
+
+<script>
+    const vid = document.getElementById("video");
+    vid.onloadstart = () => { console.log("Starting to load video") };
+    vid.onloadedmetadata = () => { console.log("Meta data for video loaded") };
+    vid.onloadeddata  = () => { console.log("Browser has loaded the current frame") };
+    vid.oncanplay  = () => { console.log("Can start playing video") };
+
+    vid.onplay = () => { console.log("The video has started to play") };
+    vid.onplaying = () => { console.log("The video is now playing") };
+</script>
+</html>
