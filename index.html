@@ -2,22 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Video Performances</title>
 </head>
 <body>
-    <video controls id="video" autoplay="autoplay">
+    <video id="video" muted autoplay controls>
         <source src="Big_Buck_Bunny_360_10s_10MB.mp4">
     </video>
+    <canvas id="chart" width="640" height="360"></canvas>
+
+    <script>
+        const vid = document.getElementById("video");
+        const ctx = document.getElementById('chart');
+        let loadData = [];
+        let playData = [];
+        vid.onloadstart = () => {
+            performance.mark('onloadstart')
+        };
+        vid.onloadedmetadata = () => {
+            performance.mark('onloadedmetadata')
+        };
+        vid.onloadeddata = () => {
+            performance.mark('onloadeddata')
+        };
+        vid.oncanplay = () => {
+            performance.mark('oncanplay');
+        };
+
+        vid.onplay = () => {
+            performance.mark('onplay')
+        };
+        vid.onplaying = () => {
+            performance.mark('onplaying');
+            const allEntries = performance.getEntriesByType("mark");
+            console.log(allEntries);
+            // draw chart here
+        };
+
+    </script>
 </body>
-
-<script>
-    const vid = document.getElementById("video");
-    vid.onloadstart = () => { console.log("Starting to load video") };
-    vid.onloadedmetadata = () => { console.log("Meta data for video loaded") };
-    vid.onloadeddata  = () => { console.log("Browser has loaded the current frame") };
-    vid.oncanplay  = () => { console.log("Can start playing video") };
-
-    vid.onplay = () => { console.log("The video has started to play") };
-    vid.onplaying = () => { console.log("The video is now playing") };
-</script>
 </html>
