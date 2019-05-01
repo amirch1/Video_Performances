@@ -4,13 +4,36 @@
     <meta charset="UTF-8">
     <title>Video Performances</title>
 </head>
+<style>
+    .chart{
+        width: 640px;
+        height: 32px;
+        border: 1px solid grey;
+        border-radius: 6px;
+        margin-top: 12px;
+        display: flex;
+        overflow: hidden;
+    }
+    .mark{
+        width: 0px;
+        transition: width 0.5s;
+    }
+</style>
 <body>
     <video id="video" muted autoplay controls>
         <source src="Big_Buck_Bunny_360_10s_10MB.mp4">
     </video>
-    <canvas id="chart" width="640" height="360"></canvas>
+    <div class="chart">
+        <div id="mark0" class="mark"></div>
+        <div id="mark1" class="mark"></div>
+        <div id="mark2" class="mark"></div>
+        <div id="mark3" class="mark"></div>
+        <div id="mark4" class="mark"></div>
+        <div id="mark5" class="mark"></div>
+    </div>
 
     <script>
+        const colors = ['#88ACF6', '#6391ED', '#487ADF', '#3567CA', '#2655B0', '#1D4694'];
         const vid = document.getElementById("video");
         const ctx = document.getElementById('chart');
         vid.onloadstart = () => {
@@ -47,8 +70,13 @@
                     percent: index > 0 ? (allEntries[index].startTime - allEntries[index-1].startTime) / totalDuration * 100 : allEntries[index].startTime / totalDuration * 100
                 });
             });
+
+            data.forEach((point, index) => {
+                document.getElementById('mark' + index).style.width = point.percent + '%';
+                document.getElementById('mark' + index).style.backgroundColor = colors[index];
+            });
+
             console.log(data);
-            // draw chart here
         }
 
     </script>
