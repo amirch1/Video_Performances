@@ -13,30 +13,43 @@
     <script>
         const vid = document.getElementById("video");
         const ctx = document.getElementById('chart');
-        let loadData = [];
-        let playData = [];
         vid.onloadstart = () => {
-            performance.mark('onloadstart')
+            performance.mark('Video load start')
         };
         vid.onloadedmetadata = () => {
-            performance.mark('onloadedmetadata')
+            performance.mark('Medtadata load start')
         };
         vid.onloadeddata = () => {
-            performance.mark('onloadeddata')
+            performance.mark('Metadata loaded')
         };
         vid.oncanplay = () => {
-            performance.mark('oncanplay');
+            performance.mark('Video can play');
         };
 
         vid.onplay = () => {
-            performance.mark('onplay')
+            performance.mark('Video play requested')
         };
         vid.onplaying = () => {
-            performance.mark('onplaying');
-            const allEntries = performance.getEntriesByType("mark");
-            console.log(allEntries);
-            // draw chart here
+            performance.mark('Video is playing');
+            draw();
         };
+
+        function draw(){
+            const allEntries = performance.getEntriesByType("mark");
+            const totalDuration = allEntries[allEntries.length-1].startTime;
+            const data = [];
+
+            allEntries.forEach((mark, index) => {
+                data.push({
+                    eventName: mark.name,
+                    time: allEntries[index].startTime - allEntries[0].startTime,
+                    duration: index > 0 ? allEntries[index].startTime - allEntries[index-1].startTime : allEntries[index].startTime,
+                    percent: index > 0 ? (allEntries[index].startTime - allEntries[index-1].startTime) / totalDuration * 100 : allEntries[index].startTime / totalDuration * 100
+                });
+            });
+            console.log(data);
+            // draw chart here
+        }
 
     </script>
 </body>
